@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X-O Game</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="cont">
+        <div class="winning">
+            <h1 class="winner"></h1>
+            <h1 class="close">Close</h1>
+        </div>
+    </div>
+
+    <h1 class="turn">X Turn's</h1>
+    <h1 class="result">X : O</h1>
+    <h1 class="res">0 : 0</h1>
+    <h1 class="replay">Replay ?</h1>
+
+    <div class="table">
+        <div class="ce1">
+            <h1 class="cell" data-cel="1" data-selected="false"></h1>
+            <h1 class="cell" data-cel="2" data-selected="false"></h1>
+            <h1 class="cell" data-cel="3" data-selected="false"></h1>
+        </div>
+        <div class="ce1">
+            <h1 class="cell" data-cel="4" data-selected="false"></h1>
+            <h1 class="cell" data-cel="5" data-selected="false"></h1>
+            <h1 class="cell" data-cel="6" data-selected="false"></h1>
+        </div>
+        <div class="ce1">
+            <h1 class="cell" data-cel="7" data-selected="false"></h1>
+            <h1 class="cell" data-cel="8" data-selected="false"></h1>
+            <h1 class="cell" data-cel="9" data-selected="false"></h1>
+        </div>
+    </div>
+</body>
+<script>
+    let wining = [
+        ['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9'],
+        ['1', '4', '7'], ['2', '5', '8'], ['3', '6', '9'],
+        ['1', '5', '9'], ['3', '5', '7']
+    ]
+    let x = 'X'
+    let getx = []
+    let gety = []
+    let winX = 0
+    let winY = 0
+    $('.cell').click(function () {
+        if ($(this).text() == '') {
+            $(this).text(x)
+            $(this).attr('data-selected', `true-${x}`)
+
+            x == 'X' ? x = 'O' : x = 'X';
+            $('.turn').text(`${x} Turn's`)
+        }
+        $('[data-selected=true-X]').toArray().forEach(e => {
+
+            getx.indexOf(e.getAttribute('data-cel')) < 0 ? getx.push(e.getAttribute('data-cel')) : ''
+        });
+
+        $('[data-selected=true-O]').toArray().forEach(e => {
+
+            gety.indexOf(e.getAttribute('data-cel')) < 0 ? gety.push(e.getAttribute('data-cel')) : ''
+        });
+        // console.log(getx.sort(), gety.sort())
+        // console.log()
+        wining.forEach((arr) => {
+            if (arr.every(e => getx.includes(e))) {
+                $('.cont').css('display', 'flex')
+                $('.winner').text('X Is The Winner')
+                winX+=1
+                $('.res').text(`${winX} : ${winY}`)
+            }
+            else if (arr.every(e => gety.includes(e))) {
+
+                $('.cont').css('display', 'flex')
+                $('.winner').text('O Is The Winner')
+                winY+=1
+                $('.res').text(`${winX} : ${winY}`)
+            }
+        })
+
+
+
+    })
+    $('.replay').click(() => { $('.cell').text('').attr('data-selected', 'false'); $('.cont').css('display', 'none'); getx = []; gety = []; })
+    $('.close').click(() => { $('.cell').text('').attr('data-selected', 'false'); $('.cont').css('display', 'none'); getx = []; gety = []; })
+
+</script>
+
+</html>
